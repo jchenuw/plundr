@@ -13,18 +13,18 @@ public class Account {
 	private int accountNumber;
 	private BigDecimal balance;
 
+	// User owner of the account
 	@ManyToOne
 	private User userOwner;
 
-	// Accounts of the user
-	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+	// Transactions of the account
+	@OneToMany(mappedBy = "accountOwner", cascade = CascadeType.ALL)
 	private List<Transaction> transactionList;
 
 	Account() {}
 
 	// Constructor
-	public Account(Long accountId, int accountNumber, BigDecimal balance) {
-		this.accountId = accountId;
+	public Account(int accountNumber, BigDecimal balance, User userOwner) {
 		this.accountNumber = accountNumber;
 		this.balance = balance;
 		this.userOwner = userOwner;

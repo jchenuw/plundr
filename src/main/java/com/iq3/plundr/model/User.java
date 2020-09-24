@@ -21,7 +21,7 @@ public class User {
 	private String email;
 
 	// Accounts of the user
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "userOwner", cascade = CascadeType.ALL)
 	private List<Account> accounts;
 
 	User() {}

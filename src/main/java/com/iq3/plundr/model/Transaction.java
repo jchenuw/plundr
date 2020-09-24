@@ -3,9 +3,7 @@ package com.iq3.plundr.model;
 import com.iq3.plundr.enums.Type;
 
 import javax.annotation.processing.Generated;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -18,15 +16,19 @@ public class Transaction {
 	private String description;
 	private Type type;
 
+	// The account this transaction is from
+	@ManyToOne
+	private Account accountOwner;
+
 	Transaction() {}
 
 	// Constructor
-	public Transaction(long transactionId, BigDecimal amount, Date date, String description, Type type) {
-		this.transactionId = transactionId;
+	public Transaction(BigDecimal amount, Date date, String description, Type type, Account accountOwner) {
 		this.amount = amount;
 		this.date = date;
 		this.description = description;
 		this.type = type;
+		this.accountOwner = accountOwner;
 	}
 
 	// Getters and Setters
