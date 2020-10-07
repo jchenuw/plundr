@@ -11,7 +11,9 @@ import javax.persistence.*;
 @Table(name = "users")
 public class User {
 
-	private @Id @GeneratedValue Long id;
+	@Id
+	@GeneratedValue
+	private Long id;
 
 	private String firstName;
 	private String lastName;
@@ -21,15 +23,16 @@ public class User {
 	private String email;
 
 	// Accounts of the user
-	@OneToMany(mappedBy = "userOwner", cascade = CascadeType.ALL)
-	private List<Account> accounts;
+	@OneToOne(mappedBy = "userOwner", cascade = CascadeType.ALL)
+	private Account account;
 
 	User() {}
 
-	public User(String firstName, String lastName, String password) {
+	public User(String firstName, String lastName, String password, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
+		this.email = email;
 	}
 
 	// Getters and Setters
@@ -73,11 +76,11 @@ public class User {
 		this.email = email;
 	}
 
-	public List<Account> getAccounts() {
-		return accounts;
+	public Account getAccount() {
+		return account;
 	}
 
-	public void setAccounts(List<Account> accounts) {
-		this.accounts = accounts;
+	public void setAccounts(Account account) {
+		this.account = account;
 	}
 }

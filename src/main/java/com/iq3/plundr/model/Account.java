@@ -8,13 +8,16 @@ import java.util.List;
 @Table(name = "accounts")
 public class Account {
 
-	private @Id @GeneratedValue Long accountId;
+	@Id
+	@GeneratedValue
+	private Long id;
 
 	private int accountNumber;
 	private BigDecimal balance;
 
 	// User owner of the account
-	@ManyToOne
+	@OneToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User userOwner;
 
 	// Transactions of the account
@@ -32,11 +35,11 @@ public class Account {
 
 	// Getters and Settlers
 	public Long getAccountId() {
-		return accountId;
+		return id;
 	}
 
 	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
+		this.id = accountId;
 	}
 
 	public int getAccountNumber() {

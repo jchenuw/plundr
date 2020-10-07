@@ -10,7 +10,10 @@ import java.util.Date;
 @Entity
 public class Transaction {
 
-	private @Id @GeneratedValue long transactionId;
+	@Id
+	@GeneratedValue
+	private long id;
+	
 	private BigDecimal amount;
 	private Date date;
 	private String description;
@@ -18,6 +21,7 @@ public class Transaction {
 
 	// The account this transaction is from
 	@ManyToOne
+	@JoinColumn(name = "account_id", referencedColumnName = "id")
 	private Account accountOwner;
 
 	Transaction() {}
@@ -33,11 +37,11 @@ public class Transaction {
 
 	// Getters and Setters
 	public long getTransactionId() {
-		return transactionId;
+		return id;
 	}
 
 	public void setTransactionId(long transactionId) {
-		this.transactionId = transactionId;
+		this.id = transactionId;
 	}
 
 	public BigDecimal getAmount() {
