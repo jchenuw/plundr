@@ -23,7 +23,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RequestMapping("/api/users")
 public class UserController {
 
-	@Autowired
 	private final UserRepository repository;
 
 	public UserController(UserRepository repository) {

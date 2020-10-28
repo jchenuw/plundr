@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/account")
+@RestController
+@RequestMapping("/api/accounts")
 public class AccountController {
 
-	@Autowired
-	private AccountRepository repository;
+	private final AccountRepository repository;
 
 	public AccountController(AccountRepository repository) {
 		this.repository = repository;
