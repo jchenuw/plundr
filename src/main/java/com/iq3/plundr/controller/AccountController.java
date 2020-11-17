@@ -44,7 +44,7 @@ public class AccountController {
 					return repository.save(account);
 				})
 				.orElseGet(() -> {
-					newAccount.setAccountId(id);
+					newAccount.setId(id);
 					return repository.save(newAccount);
 				});
 	}
