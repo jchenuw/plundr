@@ -34,12 +34,12 @@ public class Account {
 	}
 
 	// Getters and Settlers
-	public Long getAccountId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setAccountId(Long accountId) {
-		this.id = accountId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public int getAccountNumber() {
@@ -56,5 +56,13 @@ public class Account {
 
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
+	}
+
+	public Long getUserId() {
+		return userOwner.getId();
+	}
+
+	public List<Transaction> getTransactionList() {
+		return transactionList;
 	}
 }

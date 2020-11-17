@@ -5,7 +5,7 @@ import com.iq3.plundr.enums.Type;
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Transaction {
@@ -13,9 +13,9 @@ public class Transaction {
 	@Id
 	@GeneratedValue
 	private long id;
-	
+
 	private BigDecimal amount;
-	private Date date;
+	private LocalDate date;
 	private String description;
 	private Type type;
 
@@ -27,7 +27,7 @@ public class Transaction {
 	Transaction() {}
 
 	// Constructor
-	public Transaction(BigDecimal amount, Date date, String description, Type type, Account accountOwner) {
+	public Transaction(BigDecimal amount, LocalDate date, String description, Type type, Account accountOwner) {
 		this.amount = amount;
 		this.date = date;
 		this.description = description;
@@ -36,12 +36,12 @@ public class Transaction {
 	}
 
 	// Getters and Setters
-	public long getTransactionId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setTransactionId(long transactionId) {
-		this.id = transactionId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public BigDecimal getAmount() {
@@ -52,11 +52,11 @@ public class Transaction {
 		this.amount = amount;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -74,5 +74,9 @@ public class Transaction {
 
 	public void setType(Type type) {
 		this.type = type;
+	}
+
+	public Long getAccountId() {
+		return accountOwner.getId();
 	}
 }
