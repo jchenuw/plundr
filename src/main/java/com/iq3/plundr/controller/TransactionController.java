@@ -1,9 +1,8 @@
 package com.iq3.plundr.controller;
 
-import com.iq3.plundr.model.Account;
 import com.iq3.plundr.model.Transaction;
-import com.iq3.plundr.repository.AccountRepository;
-import com.iq3.plundr.repository.TransactionRepository;
+import com.iq3.plundr.service.TransactionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,47 +11,48 @@ import java.util.List;
 @RequestMapping("/api/transactions")
 public class TransactionController {
 
-	private final TransactionRepository repository;
+	private final TransactionService transactionService;
 
-	public TransactionController(TransactionRepository repository) {
-		this.repository = repository;
+	@Autowired
+	public TransactionController(TransactionService transactionService) {
+		this.transactionService = transactionService;
 	}
 
 	@GetMapping
 	List<Transaction> all() {
-		return repository.findAll();
+		return transactionService.findAll();
 	}
 
 	@PostMapping
 	Transaction newTransaction (@RequestBody Transaction newTransaction) {
-		return repository.save(newTransaction);
+		return transactionService.saveTransaction(newTransaction);
 	}
 
 	@GetMapping("/{id}")
 	Transaction getTransaction(@PathVariable Long id) {
-		return repository.findById(id)
+		return transactionService.findByTransactionId(id)
 				.orElseThrow();
 	}
 
 	@PutMapping("/{id}")
 	Transaction replaceTransaction(@RequestBody Transaction newTransaction, @PathVariable Long id) {
-		return repository.findById(id)
+		return transactionService.findByTransactionId(id)
 				.map(transaction -> {
 					transaction.setAmount(transaction.getAmount());
 					transaction.setDate(transaction.getDate());
 					transaction.setDescription(transaction.getDescription());
 					transaction.setType(transaction.getType());
-					return repository.save(transaction);
+					return transactionService.saveTransaction(transaction);
 				})
 				.orElseGet(() -> {
 					newTransaction.setId(id);
-					return repository.save(newTransaction);
+					return transactionService.saveTransaction(newTransaction);
 				});
 	}
 
 	@DeleteMapping("/{id}")
 	void deleteTransaction(@PathVariable Long id) {
-		repository.deleteById(id);
+		transactionService.deleteTransaction(id);
 	}
 
 
