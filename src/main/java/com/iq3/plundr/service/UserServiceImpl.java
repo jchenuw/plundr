@@ -5,20 +5,33 @@ import com.iq3.plundr.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
 
 	@Override
 	public User findByUsername(String username) {
-		return null;
+		return userRepository.findByUsername(username);
 	}
 
 	@Override
 	public User findByEmail(String email) {
-		return null;
+		return userRepository.findByEmail(email);
+	}
+
+	@Override
+	public Optional<User> findByUserId(Long id) {
+		return userRepository.findById(id);
+	}
+
+	@Override
+	public List<User> findAll() {
+		return userRepository.findAll();
 	}
 
 	@Override
@@ -27,17 +40,23 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void deleteExistingUser(User user) {
-
+	public User saveUser(User user) {
+		userRepository.save(user);
+		return user;
 	}
 
 	@Override
-	public void updatePassword(String newPassword) {
-
+	public void deleteUser(Long id) {
+		userRepository.deleteById(id);
 	}
 
 	@Override
-	public void updateEmail(String newEmail) {
+	public void updatePassword(User user, String newPassword) {
+		user.setPassword(newPassword);
+	}
 
+	@Override
+	public void updateEmail(User user, String newEmail) {
+		user.setEmail(newEmail);
 	}
 }
