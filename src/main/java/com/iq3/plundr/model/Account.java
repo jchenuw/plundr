@@ -33,6 +33,15 @@ public class Account {
 		this.userOwner = userOwner;
 	}
 
+	// Methods
+	public void withdrawBalance(BigDecimal amount) {
+		this.setBalance(this.getBalance().subtract(amount));
+	}
+
+	public void depositBalance(BigDecimal amount) {
+		this.setBalance(this.getBalance().add(amount));
+	}
+
 	// Getters and Settlers
 	public Long getId() {
 		return id;
