@@ -54,11 +54,15 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public void withdraw(Account account, BigDecimal amount) {
 		account.withdrawBalance(amount);
+
+		accountRepository.save(account);
 	}
 
 	@Override
 	public void deposit(Account account, BigDecimal amount) {
 		account.depositBalance(amount);
+
+		accountRepository.save(account);
 	}
 
 	@Override
@@ -68,5 +72,9 @@ public class AccountServiceImpl implements AccountService{
 		recipientAccount.depositBalance(amount);
 
 		// Save and create new transactions for both the accounts
+
+		// Save accounts
+		accountRepository.save(senderAccount);
+		accountRepository.save(recipientAccount);
 	}
 }

@@ -7,11 +7,13 @@ import com.iq3.plundr.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.PrinterIOException;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("/api")
 public class AccountController {
 
 	private final AccountService accountService;
@@ -23,29 +25,67 @@ public class AccountController {
 		this.userService = userService;
 	}
 
-	@GetMapping
+	// Principal requests
+	@GetMapping("/account")
+	Account getAuthorizedAccount(Principal principal) {
+		User principalUser = userService.findByUsername(principal.getName());
+		Account principalAccount = accountService.findByAccountNumber(principalUser.getAccount().getAccountNumber());
+
+		return principalAccount;
+	}
+
+	@PostMapping("/account/withdraw")
+	Account withdraw(Principal principal, @RequestParam(name="amount", required=true) String amount) {
+
+		User principalUser = userService.findByUsername(principal.getName());
+		Account principalAccount = accountService.findByAccountNumber(principalUser.getAccount().getAccountNumber());
+
+		accountService.withdraw(principalAccount, new BigDecimal(amount));
+
+		return principalAccount;
+	}
+
+	@PostMapping("/account/deposit")
+	Account deposit(Principal principal, @RequestParam(name="amount", required=true) String amount) {
+		User principalUser = userService.findByUsername(principal.getName());
+		Account principalAccount = accountService.findByAccountNumber(principalUser.getAccount().getAccountNumber());
+
+		accountService.deposit(principalAccount, new BigDecimal(amount));
+
+		return principalAccount;
+	}
+
+	@PostMapping("/account/transfer")
+	void transfer(Principal principal,
+				  @RequestParam(name="recipient", required=true) String recipientUsername,
+				  @RequestParam(name="amount", required=true) String amount) {
+		User principalUser = userService.findByUsername(principal.getName());
+		User recipientUser = userService.findByUsername(recipientUsername);
+
+		Account principalAccount = accountService.findByAccountNumber(principalUser.getAccount().getAccountNumber());
+		Account recipientAccount = accountService.findByAccountNumber(recipientUser.getAccount().getAccountNumber());
+
+		accountService.transfer(principalAccount, recipientAccount, new BigDecimal(amount));
+	}
+
+	// Admin requests
+	@GetMapping("/accounts")
 	List<Account> all() {
 		return accountService.findAll();
 	}
 
-	@GetMapping("/authorizedAccount")
-	Account getAuthorizedAccount(Principal principal) {
-		User principalUser = userService.findByUsername(principal.getName());
-		return accountService.findByAccountNumber(principalUser.getAccount().getAccountNumber());
-	}
-
-	@PostMapping
+	@PostMapping("/accounts")
 	Account newAccount(@RequestBody Account newAccount) {
 		return accountService.saveAccount(newAccount);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/accounts/{id}")
 	Account getAccount(@PathVariable Long id) {
 		return accountService.findByAccountId(id)
 				.orElseThrow();
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/accounts/{id}")
 	Account replaceAccount(@RequestBody Account newAccount, @PathVariable Long id) {
 		return accountService.findByAccountId(id)
 				.map(account -> {
@@ -59,7 +99,7 @@ public class AccountController {
 				});
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/accounts/{id}")
 	void deleteAccount(@PathVariable Long id) {
 		accountService.deleteAccount(id);
 	}
