@@ -1,6 +1,8 @@
 package com.iq3.plundr.service;
 
+import com.iq3.plundr.enums.Type;
 import com.iq3.plundr.model.Account;
+import com.iq3.plundr.model.Transaction;
 import com.iq3.plundr.model.User;
 import com.iq3.plundr.repository.AccountRepository;
 import com.iq3.plundr.repository.TransactionRepository;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +75,10 @@ public class AccountServiceImpl implements AccountService{
 		recipientAccount.depositBalance(amount);
 
 		// Save and create new transactions for both the accounts
+		transactionRepository.save(new Transaction(amount, LocalDate.now(),
+				"e-Transfer withdraw", Type.WITHDRAW, senderAccount));
+		transactionRepository.save(new Transaction(amount, LocalDate.now(),
+				"e-Transfer deposit", Type.DEPOSIT, recipientAccount));
 
 		// Save accounts
 		accountRepository.save(senderAccount);
