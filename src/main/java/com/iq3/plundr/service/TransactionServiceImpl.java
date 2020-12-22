@@ -1,5 +1,6 @@
 package com.iq3.plundr.service;
 
+import com.iq3.plundr.model.Account;
 import com.iq3.plundr.model.Transaction;
 import com.iq3.plundr.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,11 @@ public class TransactionServiceImpl implements TransactionService{
 	@Override
 	public List<Transaction> findAll() {
 		return transactionRepository.findAll();
+	}
+
+	@Override
+	public List<Transaction> findAllFromAccount(Account account) {
+		return transactionRepository.findByAccountOwner(account);
 	}
 
 	@Override
