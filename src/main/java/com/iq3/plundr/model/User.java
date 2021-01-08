@@ -1,20 +1,16 @@
 package com.iq3.plundr.model;
 
-import org.springframework.data.annotation.TypeAlias;
-
-import java.util.List;
-import java.util.Objects;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "Users")
 public class User {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
+	// Personal information
 	private String firstName;
 	private String lastName;
 

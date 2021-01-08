@@ -2,12 +2,12 @@ package com.iq3.plundr.model;
 
 import com.iq3.plundr.enums.Type;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "Transactions")
 public class Transaction {
 
 	@Id
