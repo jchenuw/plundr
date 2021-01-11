@@ -26,10 +26,7 @@ import java.util.Arrays;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	DataSource dataSource;
-
-	@Autowired
-	private UserDetailsService userDetailsService;
+	private UserDetailsServiceImpl userDetailsService;
 
 	@Autowired
 	private JwtFilter jwtFilter;
@@ -53,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
-				.defaultSuccessUrl("/", true)
+				.defaultSuccessUrl("/api/account", true)
 				.permitAll()
 				.and()
 			.httpBasic()
