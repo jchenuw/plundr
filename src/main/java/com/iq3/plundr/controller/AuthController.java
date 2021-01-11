@@ -33,8 +33,6 @@ public class AuthController {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(username, password));
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-
 		String jwtToken = jwtUtil.generateToken(authentication);
 
 		return ResponseEntity.ok(new SuccessLoginInfo(jwtToken));
