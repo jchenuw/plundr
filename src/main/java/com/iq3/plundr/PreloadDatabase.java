@@ -10,9 +10,11 @@ import com.iq3.plundr.repository.UserRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,15 +25,24 @@ public class PreloadDatabase {
 	private static final Logger log =
 			LoggerFactory.getLogger(PreloadDatabase.class);
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Bean
 	CommandLineRunner initDatabase(UserRepository userRepository, AccountRepository accountRepository,
 			TransactionRepository transactionRepository) {
 
 		return args -> {
 
+			String fryPass = "12345";
+			String encodeFryPass = passwordEncoder.encode(fryPass);
+			log.info(fryPass + " " + encodeFryPass + " " + passwordEncoder.matches(fryPass, encodeFryPass));
+
 			// Test users
-			User userFry = new User("Fry", "Phillip", "12345", "fry@gmail.com");
-			User userLeela = new User("Leela", "Taranga", "abcd", "leela@gmail.com");
+			User userFry = new User("Fry", "Phillip", "fryfryfry",
+					encodeFryPass, "fry@gmail.com");
+			User userLeela = new User("Leela", "Taranga", "Cyclops",
+					passwordEncoder.encode("abcd"), "leela@gmail.com");
 
 			// Test accounts
 			Account accountFry = new Account(111, new BigDecimal(500.00), userFry);
