@@ -7,7 +7,6 @@ import com.iq3.plundr.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.PrinterIOException;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
@@ -69,23 +68,23 @@ public class AccountController {
 	}
 
 	// Admin requests
-	@GetMapping("/accounts")
+	@GetMapping("/admin/accounts")
 	List<Account> all() {
 		return accountService.findAll();
 	}
 
-	@PostMapping("/accounts")
+	@PostMapping("/admin/accounts")
 	Account newAccount(@RequestBody Account newAccount) {
 		return accountService.saveAccount(newAccount);
 	}
 
-	@GetMapping("/accounts/{id}")
+	@GetMapping("/admin/accounts/{id}")
 	Account getAccount(@PathVariable Long id) {
 		return accountService.findByAccountId(id)
 				.orElseThrow();
 	}
 
-	@PutMapping("/accounts/{id}")
+	@PutMapping("/admin/accounts/{id}")
 	Account replaceAccount(@RequestBody Account newAccount, @PathVariable Long id) {
 		return accountService.findByAccountId(id)
 				.map(account -> {
@@ -99,7 +98,7 @@ public class AccountController {
 				});
 	}
 
-	@DeleteMapping("/accounts/{id}")
+	@DeleteMapping("/admin/accounts/{id}")
 	void deleteAccount(@PathVariable Long id) {
 		accountService.deleteAccount(id);
 	}
